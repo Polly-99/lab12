@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 		{
 			long result = 0;
    		 	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &result);
-			std::cout << "Response answer == " << result << '\n';
+			std::cout << "Response - " << result << '\n';
 		}
 	}
  
