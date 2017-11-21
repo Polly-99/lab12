@@ -34,27 +34,25 @@ int main(int argc, char *argv[])
 		
 		std::promise<CURLcode> promise;
 		auto response = promise.get_future();
-		res = curl_easy_perform(curl);
 
-		std::thread thread([res, &promise](){
-			promise.set_value(res);
+		std::thread thread([curl, &promise](){
+			promise.set_value(curl_easy_perform(curl));
 		});
 
 		thread.join();
+		long result = 0;
 
+		
 		if(res != CURLE_OK)
 		{
 			std::cout << "ERROR" <<  std::endl;
-			curl_easy_cleanup(curl);
 		}
 		else
 		{
-			long result = 0;
    		 	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &result);
 			std::cout << "Response - " << result << '\n';
 		}
 	}
- 
-	curl_global_cleanup();
+ 	curl_easy_cleanup(curl);
 	return 0;
 }
